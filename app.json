@@ -1,0 +1,20 @@
+import Fastify from "fastify";
+import rawBody from "@fastify/raw-body";
+import { mobileBillingRoutes } from "./routes/mobileBilling.js";
+import { stripeWebhookRoutes } from "./routes/stripeWebhook.js";
+
+export function createApp() {
+  const app = Fastify({ logger: true });
+
+  app.register(rawBody, {
+    field: "rawBody",
+    global: false,
+    encoding: false,
+    runFirst: true,
+  });
+
+  app.register(mobileBillingRoutes);
+  app.register(stripeWebhookRoutes);
+
+  return app;
+}
